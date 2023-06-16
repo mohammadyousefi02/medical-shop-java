@@ -1,10 +1,14 @@
 package com.example.medicalshop.user;
 
 import com.example.medicalshop.cart.CartItem;
+import com.example.medicalshop.order.Order;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 
@@ -22,20 +26,32 @@ public class User {
 
     private String username;
 
+    @JsonIgnore
     private String password;
 
     private String email;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonIgnoreProperties({"user"})
     private List<CartItem> cart;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonIgnoreProperties({"user"})
+    private List<Order> orders;
 
     public User(String username, String password, String email) {
         this.username = username;
         this.password = password;
         this.email = email;
     }
+
+    @PreRemove
+    public void deleteUser() {
+        orders.forEach(order -> order.setUser(null));
+    }
+
 
     @Override
     public String toString() {
