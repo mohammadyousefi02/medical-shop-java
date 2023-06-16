@@ -2,6 +2,7 @@ package com.example.medicalshop.user;
 
 import com.example.medicalshop.cart.CartItem;
 import com.example.medicalshop.order.Order;
+import com.example.medicalshop.save.Save;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -40,6 +41,11 @@ public class User {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonIgnoreProperties({"user"})
     private List<Order> orders;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonIgnoreProperties({"user"})
+    private List<Save> saves;
 
     public User(String username, String password, String email) {
         this.username = username;
