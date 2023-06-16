@@ -2,6 +2,7 @@ package com.example.medicalshop.order;
 
 import com.example.medicalshop.cart.CartItem;
 import com.example.medicalshop.cart.CartService;
+import com.example.medicalshop.exceptions.BadRequestException;
 import com.example.medicalshop.exceptions.NotFoundException;
 import com.example.medicalshop.product.Product;
 import com.example.medicalshop.user.User;
@@ -39,6 +40,7 @@ public class OrderService {
         order.setUser(user.get());
         List<CartItem> cartItems = user.get().getCart();
         List<OrderItem> orderItems = new ArrayList<>();
+        if(cartItems.isEmpty()) throw new BadRequestException("you should have at least an item in cart");
         for (CartItem cartItem : cartItems) {
             OrderItem orderItem = new OrderItem();
             Product product = cartItem.getProduct();

@@ -2,6 +2,7 @@ package com.example.medicalshop.order;
 
 import com.example.medicalshop.user.User;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,7 +21,7 @@ public class Order {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
-    @JsonIgnoreProperties({"orders"})
+    @JsonIncludeProperties({"id", "username", "email"})
     private User user;
 
     private String name;
