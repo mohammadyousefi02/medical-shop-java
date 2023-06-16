@@ -20,14 +20,14 @@ public class CartItem {
 
     private int quantity;
 
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "product_id")
     private Product product;
 
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonIgnoreProperties({"cart"})
+    @JsonIgnoreProperties({"cart", "orders"})
     private User user;
 
 
