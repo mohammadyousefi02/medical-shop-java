@@ -28,10 +28,9 @@ public class CartService {
     }
 
     @Transactional
-    public Response addToCart(Long userId, Long productId) {
+    public Response<CartItem> addToCart(Long userId, Long productId) {
         Response<CartItem> response = new Response<>();
         Optional<CartItem> cartItem = cartRepository.findByUser_IdAndProduct_Id(userId, productId);
-//        return cartItem.get();
         if (cartItem.isPresent()) {
             cartItem.get().increaseQuantity();
             response.setData(cartRepository.save(cartItem.get()));
@@ -72,7 +71,7 @@ public class CartService {
 
     @Transactional
     public String clear(Long userId) {
-        cartRepository.deleteCartItemByUser_Id(userId);
+        cartRepository.deleteByUser_Id(userId);
         return "ok";
     }
 }
